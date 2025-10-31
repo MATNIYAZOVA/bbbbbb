@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zarnigor | Portfolio</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth;}
+    
+    html, body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: 0.4s ease;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --text: #f0f0f0;
+      --card: #161616;
+      --accent: #00aaff;
+    }
+
+    body.light {
+      --bg: #f8f8f8;
+      --text: #111;
+      --card: #fff;
+      --accent: #0077cc;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 40px;
+      z-index: 10;
+      transition: 0.4s;
+    }
+
+    body.light header {background: rgba(255,255,255,0.6);}
+
+    .logo {font-size: 26px; font-weight: 600;}
+    .logo span {color: var(--accent);}
+    nav ul {list-style: none; display: flex; gap: 25px;}
+    nav a {color: var(--text); font-weight: bold; transition: 0.3s;}
+    nav a:hover {color: var(--accent);}
+
+    .toggle-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+
+    .profile-pic {
+      width: 180px; height: 180px;
+      border-radius: 50%; border: 3px solid var(--accent);
+      object-fit: cover; filter: grayscale(20%) brightness(1.05);
+      margin-bottom: 20px;
+    }
+
+    .hero h2 {font-size: 2rem; margin-bottom: 10px;}
+    .hero span {color: var(--accent);}
+    .typing {color: var(--accent); font-weight: bold; border-right: 2px solid var(--accent);}
+    .hero p {max-width: 600px; color: var(--text); margin-top: 10px;}
+
+    .hero button {
+      margin-top: 25px; padding: 12px 28px;
+      background: var(--accent); border: none;
+      border-radius: 6px; color: white; font-weight: 600;
+      cursor: pointer; transition: 0.3s;
+    }
+    .hero button:hover {opacity: 0.8;}
+
+    section {padding: 80px 20px; text-align: center;}
+    section h2 {font-size: 1.9rem; color: var(--accent); margin-bottom: 15px;}
+    section p {color: var(--text); max-width: 650px; margin: 0 auto;}
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px; margin-top: 40px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+    body.light .card {box-shadow: 0 3px 10px rgba(0,0,0,0.1);}
+    .card:hover {transform: translateY(-6px);}
+    .card img {width: 100%; height: 190px; object-fit: cover;}
+    .card h3 {margin: 10px 0;}
+    .card p {font-size: 0.9rem; padding: 0 15px 20px;}
+    .card button {
+      margin-bottom: 15px;
+      background: var(--accent);
+      border: none;
+      padding: 8px 15px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .card button:hover {opacity: 0.85;}
+
+    .contact-info p {margin: 5px 0;}
+    .contact-info span {color: var(--accent);}
+    form {
+      display: flex; flex-direction: column;
+      gap: 10px; max-width: 400px; margin: 20px auto;
+    }
+    input, textarea {
+      background: var(--card);
+      border: 1px solid #555;
+      padding: 10px; color: var(--text);
+      border-radius: 5px;
+    }
+    button[type="submit"] {
+      background: var(--accent);
+      border: none;
+      padding: 10px;
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background: var(--card);
+      color: #888;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 600px;
+      text-align: center;
+      color: var(--text);
+      position: relative;
+    }
+    .modal-content img {width: 100%; border-radius: 10px; margin-bottom: 15px;}
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 class="logo">Zarnigor Matniyazova<span>.</span></h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Bosh sahifa</a></li>
+        <li><a href="#about">Men haqimda</a></li>
+        <li><a href="#projects">Loyihalar</a></li>
+        <li><a href="#contact">Aloqa</a></li>
+      </ul>
+    </nav>
+    <button class="toggle-btn" id="themeToggle">🌙 Dark</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <img src="profile.jpg" alt="Zarnigor rasmi" class="profile-pic" />
+      <h2>Salom, men <span>Zarnigor</span>man 🌙</h2>
+      <h3 class="typing" id="typing"></h3>
+      <p>15 yoshdaman. IT sohasida o‘qiyapman, web dasturlash va texnologiyalarni o‘rganishni yaxshi ko‘raman 💻</p>
+      <button onclick="scrollToContact()">Bog‘lanish</button>
+    </section>
+
+    <section id="about" class="about">
+      <h2>Men haqimda</h2>
+      <p>Men web dasturlashni o‘rganayotgan yosh IT o‘quvchisiman. HTML, CSS va JavaScript yordamida saytlar yaratishni yoqtiraman.Menda HTML,CSS va Js dan professianal sertifikatlar mavjud.
+        Maqsadim — foydali, chiroyli va foydalanuvchi uchun qulay loyihalar yaratish. Sizga ham yaratib berishim mumkin 🎨
+        Har bir kod orqali orzularim sari bir qadam oldinga yurayapman 🌸</p>
+    </section>
+
+    <section id="projects" class="projects">
+      <h2>Mening loyihalarim</h2>
+      <div class="project-grid">
+        <div class="card" onclick="openModal(0)">
+          <img src="https://picsum.photos/400/250?random=10" alt="">
+          <h3>Portfolio Websayt</h3>
+          <p>HTML, CSS, JS yordamida yaratilgan shaxsiy portfolio sayti.</p>
+          <button>Loyihani ko‘rish</button>
+        </div>
+
+        <div class="card" onclick="openModal(1)">
+          <img src="https://picsum.photos/400/250?random=11" alt="">
+          <h3>Kalkulyator</h3>
+          <p>JavaScript bilan ishlaydigan interaktiv kalkulyator.</p>
+          <button>Loyihani ko‘rish</button>
+        </div>
+            
+        <div class="card" onclick="openModal(2)">
+            <img src="https://picsum.photos/400/250?random=12" alt="">
+            <h3>Weather App</h3>
+            <p>API orqali ob-havo ma’lumotlarini chiqaradigan web ilova.</p>
+            <button>Loyihani ko‘rish</button>
+          </div>
+    
+          <div class="card" onclick="openModal(3)">
+            <img src="https://picsum.photos/400/250?random=13" alt="">
+            <h3>Todo List</h3>
+            <p>Vazifalarni yozish va saqlash uchun oddiy web app.</p>
+            <button>Loyihani ko‘rish</button>
+          </div>
+    
+          <div class="card" onclick="openModal(4)">
+            <img src="https://picsum.photos/400/250?random=14" alt="">
+            <h3>Login Page Dizayni</h3>
+            <p>Responsiv login sahifa dizayni, animatsiya bilan.</p>
+            <button>Loyihani ko‘rish</button>
+          </div>
+    
+          <div class="card" onclick="openModal(5)">
+            <img src="https://picsum.photos/400/250?random=15" alt="">
+            <h3>Blog UI</h3>
+            <p>Minimal blog interfeysi — zamonaviy dizayn va qulaylik.</p>
+            <button>Loyihani ko‘rish</button>
+          </div>
+
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Men bilan bog‘laning</h2>
+      <div class="contact-info">
+        <p><span>📧 Email:</span> matnyazova761@gmail.com</p>
+        <p><span>📱 Tel 1:</span> +998 33 320 76 46</p>
+        <p><span>📞 Tel 2:</span> +998 99 965 65 93</p>
+      </div>
+
+      <form action="https://formspree.io/f/xrbokboe" method="POST" id="contactForm">
+        <input type="text" name="name" placeholder="Ismingiz" required>
+        <input type="email" name="_replyto" placeholder="Email manzilingiz" required>
+        <textarea name="message" placeholder="Xabaringizni yozing..." required></textarea>
+        <button type="submit">Yuborish</button>
+      </form>
+
+      <p id="statusMessage" style="margin-top:10px;"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Zarnigor. Barcha huquqlar himoyalangan.</p>
+  </footer>
+  <!-- Modal oynalar -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <img id="modal-img" src="" alt="">
+      <h3 id="modal-title"></h3>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+  <script>
+    // Typing animatsiyasi
+    const texts = ["Frontend Developer", "IT Student", "Future Engineer"];
+    let count = 0, index = 0;
+    function type() {
+      const current = texts[count];
+      const letter = current.slice(0, ++index);
+      document.getElementById("typing").textContent = letter;
+      if (letter.length === current.length) {
+        count = (count + 1) % texts.length;
+        index = 0;
+        setTimeout(type, 1500);
+      } else {
+        setTimeout(type, 100);
+      }
+    }
+    type();
+  
+    // Scroll to contact
+    function scrollToContact() {
+      document.getElementById("contact").scrollIntoView({behavior:"smooth"});
+    }
+  
+    // Dark / Light toggle
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      toggle.textContent = document.body.classList.contains("light") ? "🌞 Light" : "🌙 Dark";
+    });
+  
+    // Form yuborish
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('statusMessage');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      status.textContent = response.ok ? "✅ Xabar yuborildi!" : "❌ Xatolik yuz berdi.";
+      if(response.ok) form.reset();
+    });
+  
+    // Loyihalar ma'lumotlari
+    const projects = [
+      {title: "Portfolio Websayt", desc: "HTML, CSS, JS yordamida yaratilgan shaxsiy portfolio sayti.", img: "https://picsum.photos/600/350?random=10"},
+      {title: "Kalkulyator", desc: "JavaScript bilan ishlaydigan interaktiv kalkulyator.", img: "https://picsum.photos/600/350?random=11"},
+      {title: "Weather App", desc: "API orqali ob-havo ma’lumotlarini chiqaradigan web ilova.", img: "https://picsum.photos/600/350?random=12"},
+      {title: "Todo List", desc: "Vazifalarni yozish va saqlash uchun oddiy web app.", img: "https://picsum.photos/600/350?random=13"},
+      {title: "Login Page Dizayni", desc: "Responsiv login sahifa dizayni, animatsiya bilan.", img: "https://picsum.photos/600/350?random=14"},
+      {title: "Blog UI", desc: "Minimal blog interfeysi — zamonaviy dizayn va qulaylik.", img: "https://picsum.photos/600/350?random=15"}
+    ];
+  
+    // Modal funksiyalari
+    function openModal(index) {
+      const modal = document.getElementById("modal");
+      document.getElementById("modal-title").textContent = projects[index].title;
+      document.getElementById("modal-desc").textContent = projects[index].desc;
+      document.getElementById("modal-img").src = projects[index].img;
+      modal.style.display = "flex";
+    }
+  
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+  </script>
+  
+  
+
+</body>
+</html>
